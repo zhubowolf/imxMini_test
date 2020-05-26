@@ -1,42 +1,41 @@
-#include "main.h"
+#include "fsl_common.h"
+#include "fsl_iomuxc.h"
+#include "MCIMX6Y2.h"
 
 void clk_enable(void)
 {
-    CCM_CCGR0 = 0xffffffff;
-    CCM_CCGR1 = 0xffffffff;
-    CCM_CCGR2 = 0xffffffff;
-    CCM_CCGR3 = 0xffffffff;
-    CCM_CCGR4 = 0xffffffff;
-    CCM_CCGR5 = 0xffffffff;
-    CCM_CCGR6 = 0xffffffff;
+    CCM->CCGR0 = 0xffffffff;
+    CCM->CCGR1 = 0xffffffff;
+    CCM->CCGR2 = 0xffffffff;
+    CCM->CCGR3 = 0xffffffff;
+    CCM->CCGR4 = 0xffffffff;
+    CCM->CCGR5 = 0xffffffff;
+    CCM->CCGR6 = 0xffffffff;
 }
 
 void led_init(void)
 {
-    SW_MUX_GPIO1_IO03 = 0x5;
-
-    SW_PAD_GPIO1_IO03 = 0X10b0;
-
-    GPIO1_GDIR = 0X00000008;
-
-    GPIO1_DR = 0X0;
+    IOMUXC_SetPinMux(IOMUXC_GPIO1_IO03_GPIO1_IO03, 0);
+    IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO03_GPIO1_IO03, 0x10b0);
+    GPIO1->GDIR |= (1 << 3);
+    GPIO1->DR &= ~(1 << 3);
 }
 
 void led_on(void)
 {
-    GPIO1_DR &= ~(1<<3);
+    GPIO1->DR &= ~(1<<3);
 }
 
 void led_off(void)
 {
-    GPIO1_DR |= (1<<3);
+    GPIO1->DR |= (1<<3);
 }
 
 void delay_short(volatile unsigned int n)
 {
     while (n--)
     {
-        /* code */
+        
     }
 }
 
